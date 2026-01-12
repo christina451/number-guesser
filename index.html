@@ -8,77 +8,7 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css"
     />
-    <style>
-      body {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        min-height: 100vh;
-        padding: 50px 0;
-      }
-      .game-container {
-        background: white;
-        border-radius: 15px;
-        padding: 40px;
-        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
-        max-width: 600px;
-        margin: 0 auto;
-      }
-      h1 {
-        color: #667eea;
-        text-align: center;
-        margin-bottom: 30px;
-      }
-      .game-info {
-        text-align: center;
-        margin-bottom: 30px;
-      }
-      .guess-input {
-        font-size: 24px;
-        text-align: center;
-        height: 60px;
-      }
-      .guess-btn {
-        height: 60px;
-        font-size: 20px;
-        font-weight: bold;
-      }
-      .feedback {
-        text-align: center;
-        font-size: 24px;
-        font-weight: bold;
-        margin: 20px 0;
-        min-height: 40px;
-      }
-      .stats {
-        background: #f5f5f5;
-        padding: 20px;
-        border-radius: 10px;
-        margin-top: 30px;
-      }
-      .stat-item {
-        text-align: center;
-        margin-bottom: 10px;
-      }
-      .stat-label {
-        font-weight: bold;
-        color: #666;
-      }
-      .stat-value {
-        font-size: 28px;
-        color: #667eea;
-        font-weight: bold;
-      }
-      .history {
-        margin-top: 20px;
-      }
-      .guess-badge {
-        margin: 5px;
-        font-size: 16px;
-        padding: 8px 15px;
-      }
-      .new-game-btn {
-        margin-top: 20px;
-      }
-    </style>
+    <link rel="stylesheet" href="styles.css"/>
   </head>
   <body>
     <div class="container">
@@ -86,14 +16,15 @@
         <h1>
           <span class="glyphicon glyphicon-question-sign"></span> Guess the
           Number!
+          <span class="glyphicon glyphicon-question-sign"></span>
         </h1>
 
         <div class="game-info">
           <p class="lead">
-            I'm thinking of a number between <strong>1</strong> and
+            Guess a number between <strong>1</strong> and
             <strong>100</strong>
           </p>
-          <p>Can you guess it?</p>
+          <p>Make your guess below!</p>
         </div>
 
         <div class="row">
@@ -149,97 +80,6 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js"></script>
-    <script>
-      let secretNumber = 0;
-      let attempts = 0;
-      let guesses = [];
-      let gamesWon = 0;
-      let bestScore = null;
-
-      function initGame() {
-        secretNumber = Math.floor(Math.random() * 100) + 1;
-        attempts = 0;
-        guesses = [];
-        updateDisplay();
-        $("#feedback").html("");
-        $("#guessInput").val("").prop("disabled", false).focus();
-        $("#guessBtn").prop("disabled", false);
-      }
-
-      function updateDisplay() {
-        $("#attempts").text(attempts);
-        $("#bestScore").text(bestScore === null ? "-" : bestScore);
-        $("#gamesWon").text(gamesWon);
-
-        let historyHTML = "";
-        guesses.forEach(function (g) {
-          let badgeClass = g < secretNumber ? "badge-warning" : "badge-info";
-          historyHTML +=
-            '<span class="label label-default guess-badge">' + g + "</span>";
-        });
-        $("#guessHistory").html(
-          historyHTML || '<span class="text-muted">No guesses yet</span>'
-        );
-      }
-
-      function makeGuess() {
-        let guess = parseInt($("#guessInput").val());
-
-        if (isNaN(guess) || guess < 1 || guess > 100) {
-          $("#feedback").html(
-            '<span class="text-warning"><span class="glyphicon glyphicon-exclamation-sign"></span> Please enter a number between 1 and 100</span>'
-          );
-          return;
-        }
-
-        attempts++;
-        guesses.push(guess);
-        updateDisplay();
-
-        if (guess === secretNumber) {
-          $("#feedback").html(
-            '<span class="text-success"><span class="glyphicon glyphicon-star"></span> Congratulations! You got it in ' +
-              attempts +
-              " attempts!</span>"
-          );
-          $("#guessInput").prop("disabled", true);
-          $("#guessBtn").prop("disabled", true);
-          gamesWon++;
-
-          if (bestScore === null || attempts < bestScore) {
-            bestScore = attempts;
-          }
-          updateDisplay();
-        } else if (guess < secretNumber) {
-          $("#feedback").html(
-            '<span class="text-info"><span class="glyphicon glyphicon-arrow-up"></span> Too low! Try higher...</span>'
-          );
-        } else {
-          $("#feedback").html(
-            '<span class="text-info"><span class="glyphicon glyphicon-arrow-down"></span> Too high! Try lower...</span>'
-          );
-        }
-
-        $("#guessInput").val("").focus();
-      }
-
-      $(document).ready(function () {
-        initGame();
-
-        $("#guessBtn").click(function () {
-          makeGuess();
-        });
-
-        $("#guessInput").keypress(function (e) {
-          if (e.which === 13) {
-            makeGuess();
-          }
-        });
-
-        $("#newGameBtn").click(function () {
-          initGame();
-        });
-      });
-    </script>
+    <script src="script.js"></script>
   </body>
 </html>
